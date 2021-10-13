@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 //dotenv - a module that loads environment variables from a .env file into process.env
-const cors = require('cors');
+const cors = require('cors'); // Cross Orogin Resource Sharing.
 const connectDB = require('./config/db')
 
 // load env variables. passing in an object with the path describing where the confi file (Globla variable) will be stored. 

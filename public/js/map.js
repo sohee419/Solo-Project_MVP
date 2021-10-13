@@ -6,7 +6,30 @@ const map = new mapboxgl.Map({
   zoom: 9 // starting zoom
 });
 
-// Load map with businesses
+// Fetch businesses from API
+async function getBusiness(){
+  const res = await fetch('/api/v1/business')
+  const data = await res.json()
+  //console.log(data)
+
+  // Take the returned data from db and reconstructed each object into a shape that mapbox needs:
+  const business = data.data.map(biz => {
+    return {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [biz.location.coordinates[0], biz.location.coordinates[1]]
+          },
+          properties: {
+            businessId: biz.businessID,
+            icon: 'dog-park'
+          }
+        }
+    })
+  loadMap(business);
+}
+
+// Load map with business
 function loadMap(){
   map.on('load', function(){
     map.addLayer({
@@ -16,31 +39,19 @@ function loadMap(){
           type: 'geojson',
           data: {
             type: 'FeatureCollection',
-            features: [
-              {
-                type: 'Feature',
-                geometry: {
-                  type: 'Point',
-                  coordinates: [-118.1436, 34.1478]
-                },
-                properties: {
-                  businessId: '0001',
-                  icon: 'dog-park'
-                }
-              }
-            ]
+            features: biz,
           }
-      },
-      layout: {
-        'icon-image': '{icon}-15',
-        'icon-size': 1.5,
-        'text-field': '{businessId}',
-        'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-        'text-offset': [0, 0.9],
-        'text-anchor': 'top'
-      }
+        },
+        layout: {
+          'icon-image': '{icon}-15',
+          'icon-size': 1.5,
+          'text-field': '{businessId}',
+          'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+          'text-offset': [0, 0.9],
+          'text-anchor': 'top'
+        }
     });
   });
 }
 
-loadMap();
+getBusiness();

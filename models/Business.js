@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const geocoder = require('../utils/geocoder');
+const geocoder = require('../utils/geocoder'); // node library for geocoding - the process of taking a text-based description of a location, such as an address or the name of a place, and returning geographic coordinates.
 
 const BusinessSchema = new mongoose.Schema({
   // add businesss type and name later on here.
@@ -17,25 +17,13 @@ const BusinessSchema = new mongoose.Schema({
   location: {
     type: {
       type: String,
-      enum: ['Point'], // GeoJson point. enum is short for enumeration. A number of things one by one. Data type that contains fixed set of constants.
+      enum: ['Point'], // GeoJson point. enum is short for enumeration. Data type that contains fixed set of constants.
     },
     coordinates: {
       type: [Number],
       index: '2dsphere' // this supports quieries that calculate geometries on an earth-like sphere.
     },
     formattedAddress: String,
-    // city: {
-    //   type: String,
-    //   required: [true, 'Please add the city']
-    // },
-    // state: {
-    //   type: String,
-    //   required: [true, 'Please add the state']
-    // },
-    // zipcode: {
-    //   type: Number,
-    //   required: [true, 'Please add the zipcode']
-    // }
   },
   createdAt: {
     type: Date,

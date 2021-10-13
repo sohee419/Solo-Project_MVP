@@ -19,6 +19,9 @@ app.use(express.json());
 // Enable cors
 app.use(cors());
 
+// Set static folder for frontend
+app.use(express.static(path.resolve(__dirname, 'public')));
+
 // Routes
 app.use('/api/v1/business', require('./routes/business'))
 

@@ -8,29 +8,29 @@ const map = new mapboxgl.Map({
 
 // Fetch businesses from API
 async function getBusiness(){
-  const res = await fetch('/api/v1/business')
-  const data = await res.json()
+  const res = await fetch('/api/v1/business');
+  const data = await res.json();
   //console.log(data)
 
   // Take the returned data from db and reconstructed each object into a shape that mapbox needs:
-  const business = data.data.map(biz => {
+  const businesses = data.data.map(business => {
     return {
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [biz.location.coordinates[0], biz.location.coordinates[1]]
+            coordinates: [business.location.coordinates[0], business.location.coordinates[1]]
           },
           properties: {
-            businessId: biz.businessID,
+            businessId: business.businessId,
             icon: 'dog-park'
           }
-        }
-    })
-  loadMap(business);
+        };
+    });
+  loadMap(businesses);
 }
 
 // Load map with business
-function loadMap(){
+function loadMap(business){
   map.on('load', function(){
     map.addLayer({
         id: 'points',
@@ -39,12 +39,12 @@ function loadMap(){
           type: 'geojson',
           data: {
             type: 'FeatureCollection',
-            features: biz,
+            features: business,
           }
         },
         layout: {
           'icon-image': '{icon}-15',
-          'icon-size': 1.5,
+          'icon-size': 2.0,
           'text-field': '{businessId}',
           'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
           'text-offset': [0, 0.9],

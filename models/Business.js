@@ -10,14 +10,18 @@ const BusinessSchema = new mongoose.Schema({
     trim: true, // trim any whitespace
     maxlength: [10, 'Business ID must be less than 10 characters']
   },
-  address: {
+  // name: {
+  //   type: String,
+  //   required: [true, 'Please add the name of the business']
+  // },
+  address: { // when user enters address, this will go through the MW and translated into location with coords.
     type: String,
     required: [true, 'Please add an address']
   },
   location: {
     type: {
       type: String,
-      enum: ['Point'], // GeoJson point. enum is short for enumeration. Data type that contains fixed set of constants.
+      enum: ['Point'], // Only acceptable data type, GeoJson point in location property. enum is short for enumeration. Data type that contains fixed set of constants.
     },
     coordinates: {
       type: [Number],
@@ -31,12 +35,13 @@ const BusinessSchema = new mongoose.Schema({
   }
 });
 
-// Geocode & create location. geocoder returns promise. This should automatically run everytime I try to save a new business.
+// Geocode & create location. geocoder returns promise. This should automatically run everytime I try to save a new business. This will convert the address into location info with long and lat before it gets saved in the database. Use pre becaues we want this to run before it gets saved in the database. 
+// MW
 BusinessSchema.pre('save', async function(next) {
-  const loc = await geocoder.geocode(this.address);
+  const loc = await geocoder.geocode(this.address); // geocode the location.
   //console.log(loc);
   this.location = {
-    type: 'Point',
+    type: 'Point', 
     coordinates: [loc[0].longitude, loc[0].latitude],
     formattedAddress: loc[0].formattedAddress
   }
@@ -47,4 +52,5 @@ BusinessSchema.pre('save', async function(next) {
 
 });
 
+// Model is to perform query.
 module.exports = mongoose.model('Business', BusinessSchema);

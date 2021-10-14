@@ -11,8 +11,8 @@ async function addBusiness(e){
   }
 
   const sendBody = {
-    businessID: businessID.value,
-    businessAddress: businessAddress.value,
+    businessId: businessID.value,
+    address: businessAddress.value,
   }
 
   try{

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getBusiness, addBusiness } = require('../controllers/business');
+const { getBusiness, addBusiness } = require('../controllers/businesses');
 
 // Routes
 router

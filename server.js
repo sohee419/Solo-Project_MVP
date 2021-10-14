@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const cors = require('cors'); // Cross Orogin Resource Sharing.
 const connectDB = require('./config/db')
 
-// load env variables. passing in an object with the path describing where the confi file (Globla variable) will be stored. 
+// load env variables. passing in an object with the path describing where the confi file (Global variable) will be stored. 
 dotenv.config({ path: './config/config.env' });
 
 // connect to database
@@ -19,7 +19,7 @@ app.use(express.json());
 // Enable cors
 app.use(cors());
 
-// Set static folder for frontend
+// Set static folder for frontend - all front end files go in public folder.
 app.use(express.static(path.resolve(__dirname, 'public')));
 
 // Routes
